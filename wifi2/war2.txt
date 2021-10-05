@@ -1,0 +1,9 @@
+mac=00-06-25-F6-5E-A6
+ssid=linksys
+ip=24.158.143.77
+gateway=192.168.1.1
+4th from circle on right
+router=linksys
+
+cm=motorola surfboard
+hfc ip=10.164.23.184

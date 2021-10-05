@@ -1,0 +1,5 @@
+NETGEAR - 192.168.0.1  userid=admin; password=password; 
+ip=24.158.141.58;
+
+
+linksys - 192.168.15.1  password=admin;

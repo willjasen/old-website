@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>serverex.html</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="SynEdit HTML exporter" />
+<style type="text/css">
+<!--
+body { color: #000000; background-color: #FFFFFF; }
+.cpp1-assembler { color: #0000FF; }
+.cpp1-character { color: #000000; }
+.cpp1-comment { color: #316AC5; font-style: italic; }
+.cpp1-float { color: #800080; }
+.cpp1-hexadecimal { color: #800080; }
+.cpp1-identifier { color: #000000; }
+.cpp1-illegalchar { color: #000000; }
+.cpp1-number { color: #800080; }
+.cpp1-octal { color: #800080; }
+.cpp1-preprocessor { color: #008000; }
+.cpp1-reservedword { color: #000000; font-weight: bold; }
+.cpp1-space { background-color: #FFFFFF; color: #000000; }
+.cpp1-string { color: #FF0000; }
+.cpp1-symbol { color: #000000; }
+-->
+</style>
+</head>
+<body>
+<pre>
+<code><span style="font: 10pt Courier New;"><span class="cpp1-comment">/*  Server Example 1.0.0
+This is a very simple example of a TCP server.  The program accepts only one 
+argument which can only be a one worded message.
+*/
+</span><span class="cpp1-preprocessor">#include &lt;stdio.h&gt;
+
+#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;netinet/in.h&gt;
+
+</span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> main(</span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> argc, </span><span class="cpp1-reservedword">char</span><span class="cpp1-space"> **argv)  </span><span class="cpp1-comment">//main function with parameter acceptence
+</span><span class="cpp1-symbol">{
+    </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> socket_desc;  </span><span class="cpp1-comment">//make socket descriptor
+</span><span class="cpp1-space">    </span><span class="cpp1-reservedword">struct</span><span class="cpp1-space"> sockaddr_in address;
+    </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> addrlen;
+    </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> new_socket;
+    </span><span class="cpp1-reservedword">char</span><span class="cpp1-space"> *message=argv[</span><span class="cpp1-number">1</span><span class="cpp1-symbol">];  </span><span class="cpp1-comment">//place argument into a string
+</span><span class="cpp1-space">    
+    socket_desc=socket(AF_INET,SOCK_STREAM,</span><span class="cpp1-number">0</span><span class="cpp1-symbol">);  </span><span class="cpp1-comment">//create a socket
+</span><span class="cpp1-space">    
+    address.sin_family=AF_INET;  </span><span class="cpp1-comment">//use TCP
+</span><span class="cpp1-space">    address.sin_addr.s_addr=INADDR_ANY;
+    address.sin_port=htons(</span><span class="cpp1-number">1000</span><span class="cpp1-symbol">);  </span><span class="cpp1-comment">//use port 1000 for server daemon
+</span><span class="cpp1-space">    
+    bind(socket_desc,(</span><span class="cpp1-reservedword">struct</span><span class="cpp1-space"> sockaddr *)&amp;address,</span><span class="cpp1-reservedword">sizeof</span><span class="cpp1-symbol">(address));  </span><span class="cpp1-comment">//bind it
+</span><span class="cpp1-space">    
+    listen(socket_desc,</span><span class="cpp1-number">3</span><span class="cpp1-symbol">);  </span><span class="cpp1-comment">//listen for pending connections
+</span><span class="cpp1-space">    
+    addrlen=</span><span class="cpp1-reservedword">sizeof</span><span class="cpp1-symbol">(address);
+    
+    new_socket=accept(socket_desc,(</span><span class="cpp1-reservedword">struct</span><span class="cpp1-space"> sockaddr *)&amp;address,&amp;addrlen);
+    
+    printf(</span><span class="cpp1-string">&quot;New socket at %d\n&quot;</span><span class="cpp1-symbol">,new_socket);  
+    
+    send(new_socket,message,strlen(message),</span><span class="cpp1-number">0</span><span class="cpp1-symbol">);  </span><span class="cpp1-comment">//send message
+</span><span class="cpp1-space">    
+    puts(</span><span class="cpp1-string">&quot;Message sent&quot;</span><span class="cpp1-symbol">);
+    
+    sleep(</span><span class="cpp1-number">3</span><span class="cpp1-symbol">);  </span><span class="cpp1-comment">//wait for 3 seconds
+</span><span class="cpp1-space">    
+    close(socket_desc);  </span><span class="cpp1-comment">//close socket
+</span><span class="cpp1-symbol">}
+
+</span></span>
+</code></pre>
+</body>
+</html>

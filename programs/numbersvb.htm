@@ -1,0 +1,66 @@
+<!doctype html public '-//w3c//dtd html 4.0 transitional//en'>
+<HTML>
+  <HEAD>
+     <META HTTP-EQUIV='Content-Type' CONTENT='text/html; charset=windows-1252'>
+     <STYLE>
+       <!--
+        {font-family: Courier New;
+            font-size: 10pt;}
+        .RM  {color: #008000};
+        .KW  {color: #000080};
+        //-->
+     </STYLE>
+     <TITLE>Numbers - VB</TITLE>
+  </HEAD>
+  <BODY BGCOLOR=#FFFFFF>
+    <PRE>
+      <SPAN CLASS='KW'>Private Sub </SPAN>cmdAnswer_Click()
+      
+      <SPAN CLASS='RM'>' This is the Numbers program that I originally created in C++.
+      ' I have converted this to Visual Basic just as a way to start learning VB.
+      
+      </SPAN><SPAN CLASS='KW'>Dim </SPAN>Total <SPAN CLASS='KW'>As Integer
+      Dim </SPAN>Num1 <SPAN CLASS='KW'>As Integer
+      Dim </SPAN>Num2 <SPAN CLASS='KW'>As Integer
+      Dim </SPAN>i <SPAN CLASS='KW'>As Integer
+      Dim </SPAN>x <SPAN CLASS='KW'>As Integer
+      Dim </SPAN>y <SPAN CLASS='KW'>As Integer
+      Dim </SPAN>z <SPAN CLASS='KW'>As Integer
+      
+      </SPAN>x = 10
+      y = 20
+      z = 1
+      
+      Total = txtTotal.Text
+      Total = Total - 25
+      
+      <SPAN CLASS='KW'>For </SPAN>i = 1 <SPAN CLASS='KW'>To </SPAN>10
+          <SPAN CLASS='KW'>If </SPAN>((x < Total) <SPAN CLASS='KW'>And </SPAN>(Total < y)) <SPAN CLASS='KW'>Then
+              </SPAN>Num1 = z
+              x = 1
+          <SPAN CLASS='KW'>Else
+              </SPAN>x = x + 10
+              y = y + 10
+              z = z + 1
+          <SPAN CLASS='KW'>End If
+      Next
+      
+      </SPAN>z = 1
+      
+      <SPAN CLASS='KW'>For </SPAN>i = 1 <SPAN CLASS='KW'>To </SPAN>9
+          <SPAN CLASS='KW'>If </SPAN>(((Total - x) <SPAN CLASS='KW'>Mod </SPAN>10) = 0) <SPAN CLASS='KW'>Then
+              </SPAN>Num2 = z
+          <SPAN CLASS='KW'>Else
+              </SPAN>x = x + 1
+              z = z + 1
+          <SPAN CLASS='KW'>End If
+      Next
+      
+      </SPAN>MsgBox "Your first number was: " & Num1 & vbNewLine & "Your second number was: " & Num2, vbExclamation, "Answer!"
+      
+      <SPAN CLASS='KW'>End Sub
+      </SPAN>
+
+     </PRE>
+  </BODY>
+</HTML>

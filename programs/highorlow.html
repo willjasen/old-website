@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>highorlow.html</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="SynEdit HTML exporter" />
+<style type="text/css">
+<!--
+body { color: #000000; background-color: #FFFFFF; }
+.cpp1-assembler { color: #0000FF; }
+.cpp1-character { color: #000000; }
+.cpp1-comment { color: #316AC5; font-style: italic; }
+.cpp1-float { color: #800080; }
+.cpp1-hexadecimal { color: #800080; }
+.cpp1-identifier { color: #000000; }
+.cpp1-illegalchar { color: #000000; }
+.cpp1-number { color: #800080; }
+.cpp1-octal { color: #800080; }
+.cpp1-preprocessor { color: #008000; }
+.cpp1-reservedword { color: #000000; font-weight: bold; }
+.cpp1-space { background-color: #FFFFFF; color: #000000; }
+.cpp1-string { color: #FF0000; }
+.cpp1-symbol { color: #000000; }
+-->
+</style>
+</head>
+<body>
+<pre>
+<code><span style="font: 10pt Courier New;"><span class="cpp1-preprocessor">#include &lt;ctime&gt;  </span><span class="cpp1-comment">//used for the time function
+</span><span class="cpp1-preprocessor">#include &lt;iostream&gt;
+</span><span class="cpp1-reservedword">using</span><span class="cpp1-space"> </span><span class="cpp1-reservedword">namespace</span><span class="cpp1-space"> std;
+
+</span><span class="cpp1-reservedword">class</span><span class="cpp1-space"> Number  </span><span class="cpp1-comment">//declare a class
+</span><span class="cpp1-symbol">{
+      </span><span class="cpp1-reservedword">public</span><span class="cpp1-symbol">:  </span><span class="cpp1-comment">//functions used to access the private variable
+</span><span class="cpp1-space">             </span><span class="cpp1-reservedword">void</span><span class="cpp1-space"> SetNumber();
+             </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> GetNumber();
+      </span><span class="cpp1-reservedword">private</span><span class="cpp1-symbol">:  </span><span class="cpp1-comment">//protecting the int from being changed outside of class
+</span><span class="cpp1-space">              </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> m_number;
+};
+
+</span><span class="cpp1-reservedword">void</span><span class="cpp1-space"> Number::SetNumber()
+{
+     srand(time(NULL));  </span><span class="cpp1-comment">//declare only once in a program
+</span><span class="cpp1-space">     m_number=(rand()%</span><span class="cpp1-number">49</span><span class="cpp1-symbol">)+</span><span class="cpp1-number">1</span><span class="cpp1-symbol">;  </span><span class="cpp1-comment">//create a random number
+</span><span class="cpp1-symbol">}
+
+</span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> Number::GetNumber()
+{
+     </span><span class="cpp1-reservedword">return</span><span class="cpp1-space"> m_number;  
+}
+
+</span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> main()
+{
+    </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> guess=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+    Number num;  </span><span class="cpp1-comment">//declare an object
+</span><span class="cpp1-space"> 
+    num.SetNumber();  </span><span class="cpp1-comment">//set the random number
+</span><span class="cpp1-space">    cout &lt;&lt; </span><span class="cpp1-string">&quot;Choose a number and I'll tell you whether it's higher or lower.\n&quot;</span><span class="cpp1-symbol">; 
+    
+    </span><span class="cpp1-reservedword">while</span><span class="cpp1-symbol">(guess!=num.GetNumber())  </span><span class="cpp1-comment">//game loop
+</span><span class="cpp1-space">    {
+        cin &gt;&gt; guess;
+        </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(guess &lt; num.GetNumber())
+        {
+             cout &lt;&lt; </span><span class="cpp1-string">&quot;Higher.\n&quot;</span><span class="cpp1-symbol">;
+        }
+        </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(guess &gt; num.GetNumber())
+        {
+             cout &lt;&lt; </span><span class="cpp1-string">&quot;Lower.\n&quot;</span><span class="cpp1-symbol">;
+        }
+    }
+    cout &lt;&lt; </span><span class="cpp1-string">&quot;You are correct!\n&quot;</span><span class="cpp1-symbol">;
+    </span><span class="cpp1-reservedword">return</span><span class="cpp1-space"> </span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+}
+
+</span></span>
+</code></pre>
+</body>
+</html>

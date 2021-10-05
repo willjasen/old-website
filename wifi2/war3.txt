@@ -1,0 +1,9 @@
+mac=00-0C-41-86-86-9C
+router=linksys
+ssid=linksys
+password=admin
+gateway=192.168.1.1
+ip=24.159.34.28
+
+cm=3com external 2way cm
+hfc ip=10.164.48.247

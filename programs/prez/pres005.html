@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>pres.html</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="SynEdit HTML exporter" />
+<style type="text/css">
+<!--
+body { color: #000000; background-color: #FFFFFF; }
+.cpp1-assembler { color: #0000FF; }
+.cpp1-character { color: #000000; }
+.cpp1-comment { color: #316AC5; font-style: italic; }
+.cpp1-float { color: #800080; }
+.cpp1-hexadecimal { color: #800080; }
+.cpp1-identifier { color: #000000; }
+.cpp1-illegalchar { color: #000000; }
+.cpp1-number { color: #800080; }
+.cpp1-octal { color: #800080; }
+.cpp1-preprocessor { color: #008000; }
+.cpp1-reservedword { color: #000000; font-weight: bold; }
+.cpp1-space { background-color: #FFFFFF; color: #000000; }
+.cpp1-string { color: #FF0000; }
+.cpp1-symbol { color: #000000; }
+-->
+</style>
+</head>
+<body>
+<pre>
+<code><span style="font: 10pt Courier New;"><span class="cpp1-comment">/*
+    Presidents Source Code - Version 0.0.5
+    
+Instead of working on the previous code which was really sloppy and was getting 
+nowhere, I decided to tidy things up to make this game easier to debug.  This is 
+the first release of the neater code.  This version only sets up the deck, shuffles 
+it, and deals it out.
+*/
+
+</span><span class="cpp1-preprocessor">#include &lt;ctime&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+</span><span class="cpp1-reservedword">using</span><span class="cpp1-space"> </span><span class="cpp1-reservedword">namespace</span><span class="cpp1-space"> std;
+
+</span><span class="cpp1-comment">//define Cards class and have a inheritance class of Players
+</span><span class="cpp1-reservedword">class</span><span class="cpp1-space"> Cards
+{
+      </span><span class="cpp1-reservedword">public</span><span class="cpp1-symbol">:
+             vector&lt;</span><span class="cpp1-reservedword">int</span><span class="cpp1-symbol">&gt; deck;  </span><span class="cpp1-comment">//the entire deck
+</span><span class="cpp1-space">             vector&lt;</span><span class="cpp1-reservedword">int</span><span class="cpp1-symbol">&gt; hand;  </span><span class="cpp1-comment">//consists of 13 cards
+</span><span class="cpp1-space">             
+             </span><span class="cpp1-reservedword">void</span><span class="cpp1-space"> makeDeck();
+             </span><span class="cpp1-reservedword">void</span><span class="cpp1-space"> shuffleDeck();
+             </span><span class="cpp1-reservedword">void</span><span class="cpp1-space"> clearScreen();
+             
+};
+
+</span><span class="cpp1-comment">//class Player : public Cards
+//{
+</span><span class="cpp1-space">      
+</span><span class="cpp1-comment">//};
+
+</span><span class="cpp1-reservedword">void</span><span class="cpp1-space"> Cards::makeDeck()
+{
+     </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> t=</span><span class="cpp1-number">1</span><span class="cpp1-symbol">;
+     </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(</span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">52</span><span class="cpp1-symbol">; i++)
+     {
+        deck.push_back(t);
+        </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">((i+</span><span class="cpp1-number">1</span><span class="cpp1-symbol">)%</span><span class="cpp1-number">4</span><span class="cpp1-symbol">==</span><span class="cpp1-number">0</span><span class="cpp1-symbol">)
+        t++;
+     }
+     cout &lt;&lt; </span><span class="cpp1-string">&quot;Deck made.\n&quot;</span><span class="cpp1-symbol">;
+}
+
+</span><span class="cpp1-reservedword">void</span><span class="cpp1-space"> Cards::shuffleDeck()
+{
+     srand(time(NULL));
+     </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> temp=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+     
+     </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(</span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">52</span><span class="cpp1-symbol">; i++)
+     {
+        </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> r=(rand()%</span><span class="cpp1-number">52</span><span class="cpp1-symbol">);
+        temp=deck[i]; deck[i]=deck[r]; deck[r]=temp; 
+     }
+     cout &lt;&lt; </span><span class="cpp1-string">&quot;Deck shuffled.\n&quot;</span><span class="cpp1-symbol">;
+}
+</span><span class="cpp1-reservedword">void</span><span class="cpp1-space"> Cards::clearScreen()
+{
+     system(</span><span class="cpp1-string">&quot;cls&quot;</span><span class="cpp1-symbol">);
+}
+
+</span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> main()
+{
+    Cards human; Cards bot1; Cards bot2; Cards bot3; Cards setup;
+    </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> i;
+    
+    setup.makeDeck();
+    setup.shuffleDeck();
+     
+    </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; i++)
+    {
+       human.hand.push_back(setup.deck[i]);
+    }
+    </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; i++)
+    {
+       bot1.hand.push_back(setup.deck[(i+</span><span class="cpp1-number">13</span><span class="cpp1-symbol">)]);
+    }
+    </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; i++)
+    {
+       bot2.hand.push_back(setup.deck[(i+</span><span class="cpp1-number">26</span><span class="cpp1-symbol">)]);
+    }
+    </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; i++)
+    {
+       bot3.hand.push_back(setup.deck[(i+</span><span class="cpp1-number">39</span><span class="cpp1-symbol">)]);
+    }
+    
+}
+
+</span></span>
+</code></pre>
+</body>
+</html>

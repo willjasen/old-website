@@ -1,0 +1,14 @@
+NETGEAR - Ambit Cable Modem
+Cable Modem : DOCSIS 1.0/1.1/2.0 Compliant 
+MAC Address : 00:0e:9b:66:12:14 
+Serial Number : 000E9B661214 
+Boot Code Version : 2.1.6d 
+Software Version : 2.93.1007 
+Hardware Version : 1.20 
+
+linksys - Ambit
+Cable modem : Ambit Cable Modem  MAC Address: 00:02:8A:8F:53:2E 
+Serial Number: 00d159aa0119  Board ID: U10C011.00.00_US01 
+Boot Code Version: 3.13.2  Software Version: 2.65.1013 
+Hardware Version: 1.12  Web Based Configuration Pages Version: 1.0.2 
+24.158.143.98

@@ -1,0 +1,774 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>pres100.html</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="SynEdit HTML exporter" />
+<style type="text/css">
+<!--
+body { color: #000000; background-color: #FFFFFF; }
+.cpp1-assembler { color: #0000FF; }
+.cpp1-character { color: #000000; }
+.cpp1-comment { color: #316AC5; font-style: italic; }
+.cpp1-float { color: #800080; }
+.cpp1-hexadecimal { color: #800080; }
+.cpp1-identifier { color: #000000; }
+.cpp1-illegalchar { color: #000000; }
+.cpp1-number { color: #800080; }
+.cpp1-octal { color: #800080; }
+.cpp1-preprocessor { color: #008000; }
+.cpp1-reservedword { color: #000000; font-weight: bold; }
+.cpp1-space { background-color: #FFFFFF; color: #000000; }
+.cpp1-string { color: #FF0000; }
+.cpp1-symbol { color: #000000; }
+-->
+</style>
+</head>
+<body>
+<pre>
+<code><span style="font: 10pt Courier New;"><span class="cpp1-comment">//V 0.0.5
+</span><span class="cpp1-preprocessor">#include &lt;ctime&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+</span><span class="cpp1-reservedword">using</span><span class="cpp1-space"> </span><span class="cpp1-reservedword">namespace</span><span class="cpp1-space"> std;
+
+</span><span class="cpp1-comment">//function prototypes
+</span><span class="cpp1-reservedword">void</span><span class="cpp1-space"> clearScreen();
+</span><span class="cpp1-reservedword">bool</span><span class="cpp1-space"> searchHumanHand(vector&lt;</span><span class="cpp1-reservedword">int</span><span class="cpp1-symbol">&gt; temp, </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> value, </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> num);
+</span><span class="cpp1-reservedword">char</span><span class="cpp1-space"> valueToChar(</span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> value);
+</span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> charToValue(</span><span class="cpp1-reservedword">char</span><span class="cpp1-space"> character);
+
+</span><span class="cpp1-comment">//define Cards class and have a inheritance class of Players
+</span><span class="cpp1-reservedword">class</span><span class="cpp1-space"> Cards
+{
+      </span><span class="cpp1-reservedword">public</span><span class="cpp1-symbol">:
+             vector&lt;</span><span class="cpp1-reservedword">int</span><span class="cpp1-symbol">&gt; deck;  </span><span class="cpp1-comment">//the entire deck
+</span><span class="cpp1-space">             vector&lt;</span><span class="cpp1-reservedword">int</span><span class="cpp1-symbol">&gt; hand;  </span><span class="cpp1-comment">//consists of 13 cards
+</span><span class="cpp1-space">             
+             </span><span class="cpp1-reservedword">void</span><span class="cpp1-space"> makeDeck();
+             </span><span class="cpp1-reservedword">void</span><span class="cpp1-space"> shuffleDeck();
+             </span><span class="cpp1-reservedword">void</span><span class="cpp1-space"> sortHand();
+             </span><span class="cpp1-reservedword">void</span><span class="cpp1-space"> showHand(</span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> whichplayer);
+             
+};
+
+
+</span><span class="cpp1-reservedword">class</span><span class="cpp1-space"> Player : </span><span class="cpp1-reservedword">public</span><span class="cpp1-space"> Cards
+{
+      </span><span class="cpp1-reservedword">public</span><span class="cpp1-symbol">:
+             </span><span class="cpp1-reservedword">bool</span><span class="cpp1-space"> pass;
+             </span><span class="cpp1-reservedword">bool</span><span class="cpp1-space"> turn;
+             Player();
+      
+             </span><span class="cpp1-comment">//Player(); //constructor
+</span><span class="cpp1-symbol">};
+
+
+Player::Player()
+{
+    </span><span class="cpp1-comment">/*
+    int i;
+    
+    for(i=deck.size(); i&gt;deck.size()-13; i--)
+    {
+       hand.push_back(deck[i]);
+       deck.pop_back();
+    }
+    */
+</span><span class="cpp1-space">    pass=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+}
+
+
+
+</span><span class="cpp1-reservedword">void</span><span class="cpp1-space"> Cards::makeDeck()
+{
+     </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> t=</span><span class="cpp1-number">1</span><span class="cpp1-symbol">;
+     </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(</span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">52</span><span class="cpp1-symbol">; i++)
+     {
+        deck.push_back(t);
+        </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">((i+</span><span class="cpp1-number">1</span><span class="cpp1-symbol">)%</span><span class="cpp1-number">4</span><span class="cpp1-symbol">==</span><span class="cpp1-number">0</span><span class="cpp1-symbol">)
+        t++;
+     }
+     </span><span class="cpp1-comment">//cout &lt;&lt; &quot;Deck made.\n&quot;;
+</span><span class="cpp1-symbol">}
+
+</span><span class="cpp1-reservedword">void</span><span class="cpp1-space"> Cards::shuffleDeck()
+{
+     srand(time(NULL));
+    
+     random_shuffle(deck.begin(), deck.end());
+     
+     </span><span class="cpp1-comment">//cout &lt;&lt; &quot;Deck shuffled.\n&quot;;
+</span><span class="cpp1-symbol">}
+
+</span><span class="cpp1-reservedword">void</span><span class="cpp1-space"> Cards::showHand(</span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> whichplayer)
+{
+     </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(whichplayer==</span><span class="cpp1-number">1</span><span class="cpp1-symbol">)
+     {
+         cout &lt;&lt; </span><span class="cpp1-string">&quot;Your hand:  &quot;</span><span class="cpp1-symbol">;
+     }
+     </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(whichplayer==</span><span class="cpp1-number">2</span><span class="cpp1-symbol">)
+     {
+         cout &lt;&lt; </span><span class="cpp1-string">&quot;Bot 1's hand:  &quot;</span><span class="cpp1-symbol">;
+     }
+     </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(</span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; i++)
+     {
+         cout &lt;&lt; valueToChar(hand[i]) &lt;&lt; </span><span class="cpp1-string">&quot; &quot;</span><span class="cpp1-symbol">;
+     }
+}
+
+
+</span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> main()
+{
+    Player human; Player bot1; Player bot2; Player bot3; Cards setup;
+    
+    </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> i;
+    </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> cardValueInPlay;
+    </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> numOfCardsInPlay;
+    
+    </span><span class="cpp1-reservedword">char</span><span class="cpp1-space"> cardCharPlayed;
+    </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> numOfCardsPlayed;
+    
+    </span><span class="cpp1-reservedword">bool</span><span class="cpp1-space"> gameover=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+    </span><span class="cpp1-reservedword">bool</span><span class="cpp1-space"> newround=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+    
+    
+    srand(time(NULL));
+    
+    </span><span class="cpp1-comment">//set turns
+</span><span class="cpp1-space">    </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> mod=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; </span><span class="cpp1-comment">//(rand() % 4);
+</span><span class="cpp1-space">    </span><span class="cpp1-reservedword">switch</span><span class="cpp1-symbol">(mod)
+    {
+         </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> </span><span class="cpp1-number">0</span><span class="cpp1-symbol">:  human.turn=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                  bot1.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                  bot2.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                  bot3.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                  </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+         
+         </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> </span><span class="cpp1-number">1</span><span class="cpp1-symbol">:  human.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                  bot1.turn=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                  bot2.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                  bot3.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                  </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+                  
+         </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> </span><span class="cpp1-number">2</span><span class="cpp1-symbol">:  human.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                  bot1.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                  bot2.turn=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                  bot3.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                  </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+                  
+         </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> </span><span class="cpp1-number">3</span><span class="cpp1-symbol">:  human.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                  bot1.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                  bot2.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                  bot3.turn=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                  </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+    }
+    
+    
+    clearScreen();
+    
+    </span><span class="cpp1-comment">//make and shuffle deck
+</span><span class="cpp1-space">    setup.makeDeck();
+    setup.shuffleDeck();
+    
+    </span><span class="cpp1-comment">//deal each players hand
+</span><span class="cpp1-space">    </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; i++)
+    {
+       human.hand.push_back(setup.deck[i]);
+    }
+    </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; i++)
+    {
+       bot1.hand.push_back(setup.deck[(i+</span><span class="cpp1-number">13</span><span class="cpp1-symbol">)]);
+    }
+    </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; i++)
+    {
+       bot2.hand.push_back(setup.deck[(i+</span><span class="cpp1-number">26</span><span class="cpp1-symbol">)]);
+    }
+    </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; i++)
+    {
+       bot3.hand.push_back(setup.deck[(i+</span><span class="cpp1-number">39</span><span class="cpp1-symbol">)]);
+    }
+    
+    
+    </span><span class="cpp1-comment">//sort player's hand
+</span><span class="cpp1-space">    sort(human.hand.begin(), human.hand.end());
+    sort(bot1.hand.begin(), bot1.hand.end());
+    
+    </span><span class="cpp1-comment">//for(i=0; i&lt;13; i++)
+</span><span class="cpp1-space">    </span><span class="cpp1-comment">//{
+</span><span class="cpp1-space">       </span><span class="cpp1-comment">//cout &lt;&lt; human.hand[i] &lt;&lt; endl;
+</span><span class="cpp1-space">    </span><span class="cpp1-comment">//}
+</span><span class="cpp1-space">    
+    human.showHand(</span><span class="cpp1-number">1</span><span class="cpp1-symbol">);
+    
+    </span><span class="cpp1-comment">//cout &lt;&lt; endl &lt;&lt; human.turn &lt;&lt; &quot; &quot; &lt;&lt; bot1.turn &lt;&lt; &quot; &quot; &lt;&lt; bot2.turn &lt;&lt; &quot; &quot; &lt;&lt; bot3.turn;
+</span><span class="cpp1-space">    
+    human.pass=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+    </span><span class="cpp1-reservedword">bool</span><span class="cpp1-space"> haveCards;
+    
+    </span><span class="cpp1-reservedword">char</span><span class="cpp1-space"> bot1lastplayed;
+    </span><span class="cpp1-reservedword">char</span><span class="cpp1-space"> bot2lastplayed;
+    </span><span class="cpp1-reservedword">char</span><span class="cpp1-space"> bot3lastplayed;
+    
+    </span><span class="cpp1-reservedword">while</span><span class="cpp1-symbol">(!gameover)
+    {
+         </span><span class="cpp1-reservedword">while</span><span class="cpp1-symbol">(!newround)
+         {
+             </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(human.turn &amp;&amp; !human.pass)
+             {
+                  clearScreen();
+                  
+                  </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(!bot1.pass)
+                  {
+                      cout &lt;&lt; </span><span class="cpp1-string">&quot;Bot 1 played: &quot;</span><span class="cpp1-space"> &lt;&lt; bot1lastplayed &lt;&lt; endl &lt;&lt; endl;
+                  }
+                  </span><span class="cpp1-reservedword">else
+</span><span class="cpp1-space">                  {
+                      cout &lt;&lt; </span><span class="cpp1-string">&quot;Bot 1 has passed.&quot;</span><span class="cpp1-space"> &lt;&lt; endl &lt;&lt; endl;
+                  }
+                  </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(!bot2.pass)
+                  {
+                      cout &lt;&lt; </span><span class="cpp1-string">&quot;Bot 2 played: &quot;</span><span class="cpp1-space"> &lt;&lt; bot2lastplayed &lt;&lt; endl &lt;&lt; endl;
+                  }
+                  </span><span class="cpp1-reservedword">else
+</span><span class="cpp1-space">                  {
+                      cout &lt;&lt; </span><span class="cpp1-string">&quot;Bot 2 has passed.&quot;</span><span class="cpp1-space"> &lt;&lt; endl &lt;&lt; endl;
+                  }
+                  </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(!bot3.pass)
+                  {
+                      cout &lt;&lt; </span><span class="cpp1-string">&quot;Bot 3 played: &quot;</span><span class="cpp1-space"> &lt;&lt; bot3lastplayed &lt;&lt; endl &lt;&lt; endl;
+                  }
+                  </span><span class="cpp1-reservedword">else
+</span><span class="cpp1-space">                  {
+                      cout &lt;&lt; </span><span class="cpp1-string">&quot;Bot 3 has passed.&quot;</span><span class="cpp1-space"> &lt;&lt; endl &lt;&lt; endl;
+                  }
+                  
+                  
+                  
+                  human.showHand(</span><span class="cpp1-number">1</span><span class="cpp1-symbol">);
+                  cout &lt;&lt; </span><span class="cpp1-string">&quot;\n\nCard value in play is:  &quot;</span><span class="cpp1-space"> &lt;&lt; valueToChar(cardValueInPlay) &lt;&lt; endl;
+                  cout &lt;&lt; </span><span class="cpp1-string">&quot;Each play is:  &quot;</span><span class="cpp1-space"> &lt;&lt; numOfCardsInPlay &lt;&lt; endl;     
+                      
+                  </span><span class="cpp1-reservedword">do
+</span><span class="cpp1-space">                  {
+                      cout &lt;&lt; endl &lt;&lt; </span><span class="cpp1-string">&quot;Which card value will you play?  &quot;</span><span class="cpp1-symbol">;
+                      cin &gt;&gt; cardCharPlayed;
+                      
+                      </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(cardCharPlayed == 'P')
+                      {
+                          human.pass=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                          cout &lt;&lt; </span><span class="cpp1-string">&quot;You passed.&quot;</span><span class="cpp1-space"> &lt;&lt; endl;
+                          </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+                      }
+                      
+                      cout &lt;&lt; endl &lt;&lt; </span><span class="cpp1-string">&quot;How many cards of this value will you play?  &quot;</span><span class="cpp1-symbol">;
+                      </span><span class="cpp1-reservedword">do
+</span><span class="cpp1-space">                      {
+                          cin &gt;&gt; numOfCardsPlayed;
+                      }
+                      </span><span class="cpp1-reservedword">while</span><span class="cpp1-symbol">(numOfCardsPlayed &lt; </span><span class="cpp1-number">1</span><span class="cpp1-space"> &amp;&amp; numOfCardsPlayed &gt; </span><span class="cpp1-number">4</span><span class="cpp1-symbol">);
+                      
+                      </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(numOfCardsPlayed!=numOfCardsInPlay)
+                      {
+                          cout &lt;&lt; endl &lt;&lt; </span><span class="cpp1-string">&quot;You must play the correct number of cards.\n&quot;</span><span class="cpp1-symbol">;
+                      }
+                      </span><span class="cpp1-comment">//cout &lt;&lt; &quot;Test 1&quot; &lt;&lt; endl;
+</span><span class="cpp1-space">                      </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(charToValue(cardCharPlayed)&lt;cardValueInPlay)
+                      {
+                          cout &lt;&lt; endl &lt;&lt; </span><span class="cpp1-string">&quot;You must play a equal or higher card.\n&quot;</span><span class="cpp1-symbol">;
+                      }
+                      </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(searchHumanHand(human.hand,charToValue(cardCharPlayed),numOfCardsInPlay))
+                      {    
+                          haveCards=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">; 
+                          cout &lt;&lt; endl &lt;&lt; </span><span class="cpp1-string">&quot;You don't have those cards in your hand\n&quot;</span><span class="cpp1-symbol">;
+                      }
+                      </span><span class="cpp1-reservedword">else
+</span><span class="cpp1-space">                      {
+                          haveCards=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                      }
+                  }
+                  </span><span class="cpp1-reservedword">while</span><span class="cpp1-symbol">((charToValue(cardCharPlayed)&lt;cardValueInPlay) || (numOfCardsPlayed!=numOfCardsInPlay) || !haveCards);
+                  
+                  </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(!human.pass)
+                  {
+                      </span><span class="cpp1-comment">//cout &lt;&lt; &quot;Test 3&quot; &lt;&lt; endl;
+</span><span class="cpp1-space">                      cardValueInPlay=charToValue(cardCharPlayed);
+                      numOfCardsInPlay=numOfCardsPlayed;
+                  
+                      </span><span class="cpp1-comment">//remove cards from hand
+</span><span class="cpp1-space">                      </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> numberOfCardsRemoved=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+                      </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; i++)
+                      {
+                          </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(human.hand[i]==cardValueInPlay)
+                          {
+                              </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(numberOfCardsRemoved!=numOfCardsInPlay)
+                              {
+                                  human.hand[i]=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+                                  numberOfCardsRemoved++;
+                              }
+                          }
+                      }
+                  
+                      
+                  
+                      
+                  }
+                  
+                  human.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                  bot1.turn=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                  
+                  </span><span class="cpp1-comment">//check for newround
+</span><span class="cpp1-space">                  </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(human.pass &amp;&amp; bot1.pass &amp;&amp; bot2.pass &amp;&amp; bot3.pass)
+                  {
+                      newround=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                      human.turn=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                      bot1.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                  }
+                  
+                  </span><span class="cpp1-comment">//check for gameover
+</span><span class="cpp1-space">                  </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> zerosInDeck=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+                  </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; i++)
+                  {
+                      </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(human.hand[i]==</span><span class="cpp1-number">0</span><span class="cpp1-symbol">)
+                      {
+                          zerosInDeck++;
+                      }
+                  }
+                  </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(zerosInDeck==</span><span class="cpp1-number">13</span><span class="cpp1-symbol">)
+                  {
+                      gameover=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                      bot1.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                      bot2.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                      bot3.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                      newround=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                      cout &lt;&lt; </span><span class="cpp1-string">&quot;Human wins!&quot;</span><span class="cpp1-space"> &lt;&lt; endl;
+                  }
+             }
+             </span><span class="cpp1-reservedword">else
+</span><span class="cpp1-space">             {
+                 bot1.turn=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+             }
+             
+             </span><span class="cpp1-comment">//Bot 1
+</span><span class="cpp1-space">             </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(bot1.turn &amp;&amp; !bot1.pass)
+             {
+                 </span><span class="cpp1-reservedword">bool</span><span class="cpp1-space"> playedthisturn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                 
+                 </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; i++)
+                 {
+                     </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">((bot1.hand[i] &gt;= cardValueInPlay) &amp;&amp; numOfCardsInPlay==</span><span class="cpp1-number">1</span><span class="cpp1-symbol">)
+                     {
+                         playedthisturn=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                         cardValueInPlay=bot1.hand[i];
+                         bot1.hand[i]=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+                         bot1lastplayed=valueToChar(cardValueInPlay);
+                         </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+                     }
+                     
+                     </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">((bot1.hand[i] &gt;= cardValueInPlay) &amp;&amp; numOfCardsInPlay&gt;</span><span class="cpp1-number">1</span><span class="cpp1-symbol">)
+                     {
+                         </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> targetCard=bot1.hand[i];
+                         </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> tempcardcount=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+                         </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(</span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> j=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; j&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; j++)
+                         {
+                             </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(bot1.hand[j]==targetCard)
+                             {
+                                 tempcardcount++;
+                             }
+                         }
+                         </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(tempcardcount&gt;=numOfCardsInPlay)
+                         {
+                             playedthisturn=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                             cardValueInPlay=targetCard;
+                             </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> numberOfCardsRemoved=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+                             </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; i++)
+                             {
+                                 </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(bot1.hand[i]==cardValueInPlay)
+                                 {
+                                     </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(numberOfCardsRemoved!=numOfCardsInPlay)
+                                     {
+                                         bot1.hand[i]=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+                                         numberOfCardsRemoved++;
+                                     }
+                                 }
+                             }
+                             bot1lastplayed=valueToChar(cardValueInPlay);
+                             </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+                         }
+                     }
+                 }
+                 
+                 </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(!playedthisturn)
+                 {
+                     bot1.pass=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                 
+                 }
+                       
+                 bot1.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                 bot2.turn=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                       
+                 </span><span class="cpp1-comment">//check for newround
+</span><span class="cpp1-space">                 </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(human.pass &amp;&amp; bot1.pass)
+                 {
+                     newround=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                     human.turn=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                 }
+                       
+                 </span><span class="cpp1-comment">//check for gameover
+</span><span class="cpp1-space">                 </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> zerosInDeck=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+                 </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; i++)
+                 {
+                     </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(bot1.hand[i]==</span><span class="cpp1-number">0</span><span class="cpp1-symbol">)
+                     {
+                         zerosInDeck++;
+                     }
+                 }
+                 </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(zerosInDeck==</span><span class="cpp1-number">13</span><span class="cpp1-symbol">)
+                 {
+                     gameover=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                     human.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                     bot2.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                     bot3.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                     newround=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                     cout &lt;&lt; </span><span class="cpp1-string">&quot;Bot 1 wins!&quot;</span><span class="cpp1-space"> &lt;&lt; endl;
+                 }
+             }
+             </span><span class="cpp1-reservedword">else
+</span><span class="cpp1-space">             {
+                 bot2.turn=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+             }
+             
+             </span><span class="cpp1-comment">//Bot 2
+</span><span class="cpp1-space">             </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(bot2.turn &amp;&amp; !bot2.pass)
+             {
+                 </span><span class="cpp1-reservedword">bool</span><span class="cpp1-space"> playedthisturn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+             
+                 </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; i++)
+                 {
+                     </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">((bot2.hand[i] &gt;= cardValueInPlay) &amp;&amp; numOfCardsInPlay==</span><span class="cpp1-number">1</span><span class="cpp1-symbol">)
+                     {
+                         playedthisturn=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                         cardValueInPlay=bot2.hand[i];
+                         bot2.hand[i]=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+                         bot2lastplayed=valueToChar(cardValueInPlay);
+                         </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+                     }
+                     
+                     </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">((bot2.hand[i] &gt;= cardValueInPlay) &amp;&amp; numOfCardsInPlay&gt;</span><span class="cpp1-number">1</span><span class="cpp1-symbol">)
+                     {
+                         </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> targetCard=bot2.hand[i];
+                         </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> tempcardcount=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+                         </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(</span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> j=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; j&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; j++)
+                         {
+                             </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(bot2.hand[j]==targetCard)
+                             {
+                                 tempcardcount++;
+                             }
+                         }
+                         </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(tempcardcount&gt;=numOfCardsInPlay)
+                         {
+                             playedthisturn=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                             cardValueInPlay=targetCard;
+                             </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> numberOfCardsRemoved=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+                             </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; i++)
+                             {
+                                 </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(bot2.hand[i]==cardValueInPlay)
+                                 {
+                                     </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(numberOfCardsRemoved!=numOfCardsInPlay)
+                                     {
+                                         bot2.hand[i]=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+                                         numberOfCardsRemoved++;
+                                     }
+                                 }
+                             }
+                             bot2lastplayed=valueToChar(cardValueInPlay);
+                             </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+                         }
+                     }
+                 }
+                 
+                 
+                 </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(!playedthisturn)
+                 {
+                     bot2.pass=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                 }
+                       
+                 bot2.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                 bot3.turn=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                       
+                 </span><span class="cpp1-comment">//check for newround
+</span><span class="cpp1-space">                 </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(human.pass &amp;&amp; bot1.pass &amp;&amp; bot2.pass &amp;&amp; bot3.pass)
+                 {
+                     newround=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                     human.turn=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                 }
+                       
+                 </span><span class="cpp1-comment">//check for gameover
+</span><span class="cpp1-space">                 </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> zerosInDeck=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+                 </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; i++)
+                 {
+                     </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(bot2.hand[i]==</span><span class="cpp1-number">0</span><span class="cpp1-symbol">)
+                     {
+                         zerosInDeck++;
+                     }
+                 }
+                 </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(zerosInDeck==</span><span class="cpp1-number">13</span><span class="cpp1-symbol">)
+                 {
+                     gameover=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                     human.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                     bot1.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                     bot3.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                     newround=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                     cout &lt;&lt; </span><span class="cpp1-string">&quot;Bot 2 wins!&quot;</span><span class="cpp1-space"> &lt;&lt; endl;
+                 }
+             }
+             </span><span class="cpp1-reservedword">else
+</span><span class="cpp1-space">             {
+                 bot3.turn=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+             }
+             
+             
+             </span><span class="cpp1-comment">//Bot 3
+</span><span class="cpp1-space">             </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(bot3.turn &amp;&amp; !bot3.pass)
+             {
+                 </span><span class="cpp1-reservedword">bool</span><span class="cpp1-space"> playedthisturn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+             
+                 </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; i++)
+                 {
+                     </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">((bot3.hand[i] &gt;= cardValueInPlay) &amp;&amp; numOfCardsInPlay==</span><span class="cpp1-number">1</span><span class="cpp1-symbol">)
+                     {
+                         playedthisturn=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                         cardValueInPlay=bot3.hand[i];
+                         bot3.hand[i]=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+                         bot3lastplayed=valueToChar(cardValueInPlay);
+                         </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+                     }
+                     
+                     </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">((bot3.hand[i] &gt;= cardValueInPlay) &amp;&amp; numOfCardsInPlay&gt;</span><span class="cpp1-number">1</span><span class="cpp1-symbol">)
+                     {
+                         </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> targetCard=bot3.hand[i];
+                         </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> tempcardcount=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+                         </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(</span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> j=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; j&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; j++)
+                         {
+                             </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(bot3.hand[j]==targetCard)
+                             {
+                                 tempcardcount++;
+                             }
+                         }
+                         </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(tempcardcount&gt;=numOfCardsInPlay)
+                         {
+                             playedthisturn=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                             cardValueInPlay=targetCard;
+                             </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> numberOfCardsRemoved=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+                             </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; i++)
+                             {
+                                 </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(bot3.hand[i]==cardValueInPlay)
+                                 {
+                                     </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(numberOfCardsRemoved!=numOfCardsInPlay)
+                                     {
+                                         bot3.hand[i]=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+                                         numberOfCardsRemoved++;
+                                     }
+                                 }
+                             }
+                             bot3lastplayed=valueToChar(cardValueInPlay);
+                             </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+                         }
+                     }
+                 }
+                 
+                 
+                 </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(!playedthisturn)
+                 {
+                     bot3.pass=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                 }
+                       
+                 bot3.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                 human.turn=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                       
+                 </span><span class="cpp1-comment">//check for newround
+</span><span class="cpp1-space">                 </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(human.pass &amp;&amp; bot1.pass &amp;&amp; bot2.pass &amp;&amp; bot3.pass)
+                 {
+                     newround=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                     human.turn=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                 }
+                       
+                 </span><span class="cpp1-comment">//check for gameover
+</span><span class="cpp1-space">                 </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> zerosInDeck=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+                 </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; i++)
+                 {
+                     </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(bot3.hand[i]==</span><span class="cpp1-number">0</span><span class="cpp1-symbol">)
+                     {
+                         zerosInDeck++;
+                     }
+                 }
+                 </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(zerosInDeck==</span><span class="cpp1-number">13</span><span class="cpp1-symbol">)
+                 {
+                     gameover=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                     human.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                     bot1.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                     bot2.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+                     newround=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                     cout &lt;&lt; </span><span class="cpp1-string">&quot;Bot 3 wins!&quot;</span><span class="cpp1-space"> &lt;&lt; endl;
+                 }
+             }
+             </span><span class="cpp1-reservedword">else
+</span><span class="cpp1-space">             {
+                 human.turn=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+             }
+         }
+         
+         </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(newround &amp;&amp; human.turn==</span><span class="cpp1-reservedword">true</span><span class="cpp1-space"> &amp;&amp; !gameover)
+         {
+            clearScreen();
+            cout &lt;&lt; </span><span class="cpp1-string">&quot;New round!\n\n&quot;</span><span class="cpp1-symbol">;
+            </span><span class="cpp1-reservedword">bool</span><span class="cpp1-space"> haveCards=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+            human.showHand(</span><span class="cpp1-number">1</span><span class="cpp1-symbol">);
+            
+            </span><span class="cpp1-comment">//cout &lt;&lt; &quot;\n\nCard value in play is:  &quot; &lt;&lt; valueToChar(cardValueInPlay) &lt;&lt; endl;
+</span><span class="cpp1-space">            </span><span class="cpp1-comment">//cout &lt;&lt; &quot;Each play is:  &quot; &lt;&lt; numOfCardsInPlay &lt;&lt; endl;
+</span><span class="cpp1-space">            
+            </span><span class="cpp1-reservedword">do
+</span><span class="cpp1-space">            {
+                cout &lt;&lt; endl &lt;&lt; </span><span class="cpp1-string">&quot;Which card value will you play?  &quot;</span><span class="cpp1-symbol">;
+                cin &gt;&gt; cardCharPlayed;
+                      
+                </span><span class="cpp1-reservedword">do
+</span><span class="cpp1-space">                {
+                    cout &lt;&lt; </span><span class="cpp1-string">&quot;How many cards of this value will you play?  &quot;</span><span class="cpp1-symbol">;
+                    cin &gt;&gt; numOfCardsPlayed;
+                }
+                </span><span class="cpp1-reservedword">while</span><span class="cpp1-symbol">(numOfCardsPlayed &lt; </span><span class="cpp1-number">1</span><span class="cpp1-space"> || numOfCardsPlayed &gt; </span><span class="cpp1-number">4</span><span class="cpp1-symbol">);
+                
+                </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(searchHumanHand(human.hand,charToValue(cardCharPlayed),numOfCardsPlayed))
+                {    
+                     haveCards=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">; 
+                     cout &lt;&lt; endl &lt;&lt; </span><span class="cpp1-string">&quot;You don't have those cards in your hand\n&quot;</span><span class="cpp1-symbol">;
+                }
+                </span><span class="cpp1-reservedword">else
+</span><span class="cpp1-space">                {
+                    haveCards=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+                }
+            }
+            </span><span class="cpp1-reservedword">while</span><span class="cpp1-symbol">(!haveCards);
+            
+            newround=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+            
+            cardValueInPlay=charToValue(cardCharPlayed);
+            numOfCardsInPlay=numOfCardsPlayed;
+                  
+            </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> numberOfCardsRemoved=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+                  
+            </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(i=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; i&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; i++)
+            {
+                </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(human.hand[i]==cardValueInPlay)
+                {
+                    </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(numberOfCardsRemoved!=numOfCardsInPlay)
+                    {
+                        human.hand[i]=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+                        numberOfCardsRemoved++;
+                    }
+                }
+            }
+            
+            human.turn=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+            bot1.turn=</span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+            
+            human.pass=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+            bot1.pass=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+            bot2.pass=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+            bot3.pass=</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+         }
+    } </span><span class="cpp1-comment">//gameover    
+</span><span class="cpp1-space">    </span><span class="cpp1-reservedword">return</span><span class="cpp1-space"> </span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+}
+
+
+
+</span><span class="cpp1-comment">/*
+FUNCTIONS
+*/
+
+//clear screen
+</span><span class="cpp1-reservedword">void</span><span class="cpp1-space"> clearScreen()
+{
+     system(</span><span class="cpp1-string">&quot;cls&quot;</span><span class="cpp1-symbol">);
+}
+
+</span><span class="cpp1-comment">//converts deck integer value into char value for user
+</span><span class="cpp1-reservedword">char</span><span class="cpp1-space"> valueToChar(</span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> value)
+{
+     </span><span class="cpp1-reservedword">char</span><span class="cpp1-space"> card;
+
+     </span><span class="cpp1-reservedword">switch</span><span class="cpp1-symbol">(value)
+     {
+         </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> </span><span class="cpp1-number">0</span><span class="cpp1-symbol">: card=' '; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+         </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> </span><span class="cpp1-number">1</span><span class="cpp1-symbol">: card='3'; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+         </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> </span><span class="cpp1-number">2</span><span class="cpp1-symbol">: card='4'; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+         </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> </span><span class="cpp1-number">3</span><span class="cpp1-symbol">: card='5'; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+         </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> </span><span class="cpp1-number">4</span><span class="cpp1-symbol">: card='6'; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+         </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> </span><span class="cpp1-number">5</span><span class="cpp1-symbol">: card='7'; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+         </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> </span><span class="cpp1-number">6</span><span class="cpp1-symbol">: card='8'; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+         </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> </span><span class="cpp1-number">7</span><span class="cpp1-symbol">: card='9'; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+         </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> </span><span class="cpp1-number">8</span><span class="cpp1-symbol">: card='T'; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+         </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> </span><span class="cpp1-number">9</span><span class="cpp1-symbol">: card='J'; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+         </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> </span><span class="cpp1-number">10</span><span class="cpp1-symbol">: card='Q'; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+         </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> </span><span class="cpp1-number">11</span><span class="cpp1-symbol">: card='K'; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+         </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> </span><span class="cpp1-number">12</span><span class="cpp1-symbol">: card='A'; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+         </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> </span><span class="cpp1-number">13</span><span class="cpp1-symbol">: card='2'; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+     }
+     
+     </span><span class="cpp1-reservedword">return</span><span class="cpp1-space"> card;        
+}
+
+</span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> charToValue(</span><span class="cpp1-reservedword">char</span><span class="cpp1-space"> character)
+{
+     </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> card;
+
+     </span><span class="cpp1-reservedword">do
+</span><span class="cpp1-space">     {
+         </span><span class="cpp1-reservedword">switch</span><span class="cpp1-symbol">(character)
+         {
+             </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> '3': card=</span><span class="cpp1-number">1</span><span class="cpp1-symbol">; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+             </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> '4': card=</span><span class="cpp1-number">2</span><span class="cpp1-symbol">; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+             </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> '5': card=</span><span class="cpp1-number">3</span><span class="cpp1-symbol">; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+             </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> '6': card=</span><span class="cpp1-number">4</span><span class="cpp1-symbol">; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+             </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> '7': card=</span><span class="cpp1-number">5</span><span class="cpp1-symbol">; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+             </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> '8': card=</span><span class="cpp1-number">6</span><span class="cpp1-symbol">; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+             </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> '9': card=</span><span class="cpp1-number">7</span><span class="cpp1-symbol">; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+             </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> 'T': card=</span><span class="cpp1-number">8</span><span class="cpp1-symbol">; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+             </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> 'J': card=</span><span class="cpp1-number">9</span><span class="cpp1-symbol">; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+             </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> 'Q': card=</span><span class="cpp1-number">10</span><span class="cpp1-symbol">; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+             </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> 'K': card=</span><span class="cpp1-number">11</span><span class="cpp1-symbol">; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+             </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> 'A': card=</span><span class="cpp1-number">12</span><span class="cpp1-symbol">; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+             </span><span class="cpp1-reservedword">case</span><span class="cpp1-space"> '2': card=</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; </span><span class="cpp1-reservedword">break</span><span class="cpp1-symbol">;
+             </span><span class="cpp1-reservedword">default</span><span class="cpp1-symbol">: cout &lt;&lt; </span><span class="cpp1-string">&quot;Please enter a correct value.&quot;</span><span class="cpp1-symbol">;
+         }
+     }
+     </span><span class="cpp1-reservedword">while</span><span class="cpp1-symbol">(</span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">);
+     
+     </span><span class="cpp1-reservedword">return</span><span class="cpp1-space"> card;        
+}
+
+</span><span class="cpp1-reservedword">bool</span><span class="cpp1-space"> searchHumanHand(vector&lt;</span><span class="cpp1-reservedword">int</span><span class="cpp1-symbol">&gt; temp, </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> value, </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> num)
+{             
+     </span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> tempcardcount=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">;
+     </span><span class="cpp1-reservedword">for</span><span class="cpp1-symbol">(</span><span class="cpp1-reservedword">int</span><span class="cpp1-space"> j=</span><span class="cpp1-number">0</span><span class="cpp1-symbol">; j&lt;</span><span class="cpp1-number">13</span><span class="cpp1-symbol">; j++)
+     {
+         </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(temp[j]==value)
+         {
+             tempcardcount++;
+         }
+     }
+     </span><span class="cpp1-reservedword">if</span><span class="cpp1-symbol">(tempcardcount&lt;num)
+     {
+         </span><span class="cpp1-reservedword">return</span><span class="cpp1-space"> </span><span class="cpp1-reservedword">true</span><span class="cpp1-symbol">;
+     }
+     </span><span class="cpp1-reservedword">return</span><span class="cpp1-space"> </span><span class="cpp1-reservedword">false</span><span class="cpp1-symbol">;
+}
+
+</span></span>
+</code></pre>
+</body>
+</html>

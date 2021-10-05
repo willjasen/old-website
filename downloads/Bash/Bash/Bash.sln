@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Bash", "Bash.vbproj", "{31BE55EC-243F-4FCA-82D7-9D9DB058D11A}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{31BE55EC-243F-4FCA-82D7-9D9DB058D11A}.Debug.ActiveCfg = Debug|.NET
+		{31BE55EC-243F-4FCA-82D7-9D9DB058D11A}.Debug.Build.0 = Debug|.NET
+		{31BE55EC-243F-4FCA-82D7-9D9DB058D11A}.Release.ActiveCfg = Release|.NET
+		{31BE55EC-243F-4FCA-82D7-9D9DB058D11A}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

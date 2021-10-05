@@ -1,0 +1,12 @@
+mac=00-0C-41-48-15-88
+ssid=linksys
+3rd on right??
+gateway=192.168.1.1
+ip=66.191.230.150
+router=linksys
+password=admin
+isp=charter
+speed=11mb
+
+cm=motorola surfboard
+hfc ip=10.164.18.68
